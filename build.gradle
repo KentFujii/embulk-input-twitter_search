@@ -20,9 +20,10 @@ targetCompatibility = 1.8
 
 dependencies {
     compile  "org.embulk:embulk-core:0.9.23"
+    compile  "org.twitter4j:twitter4j-core:4.0.7"
     provided "org.embulk:embulk-core:0.9.23"
     // compile "YOUR_JAR_DEPENDENCY_GROUP:YOUR_JAR_DEPENDENCY_MODULE:YOUR_JAR_DEPENDENCY_VERSION"
-    testCompile "junit:junit:4.+"
+    testCompile "org.embulk:embulk-junit4:0.10.31"
 }
 
 task classpath(type: Copy, dependsOn: ["jar"]) {

@@ -79,7 +79,23 @@ public class TwitterSearchInputPlugin
 
         // Write your code here :)
         throw new UnsupportedOperationException("TwitterSearchInputPlugin.run method is not implemented yet");
+//        return Exec.newTaskReport();
     }
+
+//    public TaskReport run(TaskSource taskSource,
+//                          Schema schema, int taskIndex,
+//                          PageOutput output) {
+//        PluginTask task = taskSource.loadTask(PluginTask.class);
+//
+//        PageBuilder pagebuilder =
+//                new PageBuilder(Exec.getBufferAllocator(), schema, output);
+//        pagebuilder.setString(schema.getColumn(0), "unko");
+//
+//        pagebuilder.addRecord();
+//        pagebuilder.finish();
+//
+//        return Exec.newTaskReport();
+//    }
 
     @Override
     public ConfigDiff guess(ConfigSource config)
