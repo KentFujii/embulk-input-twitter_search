@@ -6,6 +6,8 @@
      This is a subset of ./checkstyle.xml which allows some loose styles
 -->
 <module name="Checker">
+    <property name="localeCountry" value="JP"/>
+    <property name="localeLanguage" value="en"/>
     <module name="FileTabCharacter"/>
     <module name="NewlineAtEndOfFile">
         <property name="lineSeparator" value="lf"/>

@@ -23,7 +23,33 @@ dependencies {
     compile  "org.twitter4j:twitter4j-core:4.0.7"
     provided "org.embulk:embulk-core:0.9.23"
     // compile "YOUR_JAR_DEPENDENCY_GROUP:YOUR_JAR_DEPENDENCY_MODULE:YOUR_JAR_DEPENDENCY_VERSION"
-    testCompile "org.embulk:embulk-junit4:0.10.31"
+    testCompile "junit:junit:4.+"
+    testCompile "org.mockito:mockito-core:1.10.19"
+}
+
+test {
+    dependsOn cleanTest
+    testLogging.showStandardStreams = true
+}
+
+checkstyle {
+    configFile = file("${project.rootDir}/config/checkstyle/checkstyle.xml")
+    toolVersion = '6.14.1'
+}
+
+checkstyleMain {
+    configFile = file("${project.rootDir}/config/checkstyle/default.xml")
+    ignoreFailures = true
+}
+
+checkstyleTest {
+    configFile = file("${project.rootDir}/config/checkstyle/default.xml")
+    ignoreFailures = true
+}
+
+task checkstyle(type: Checkstyle) {
+    classpath = sourceSets.main.output + sourceSets.test.output
+    source = sourceSets.main.allJava + sourceSets.test.allJava
 }
 
 task classpath(type: Copy, dependsOn: ["jar"]) {
@@ -32,23 +58,6 @@ task classpath(type: Copy, dependsOn: ["jar"]) {
     into "classpath"
 }
 clean { delete "classpath" }
-
-checkstyle {
-    configFile = file("${project.rootDir}/config/checkstyle/checkstyle.xml")
-    toolVersion = '6.14.1'
-}
-checkstyleMain {
-    configFile = file("${project.rootDir}/config/checkstyle/default.xml")
-    ignoreFailures = true
-}
-checkstyleTest {
-    configFile = file("${project.rootDir}/config/checkstyle/default.xml")
-    ignoreFailures = true
-}
-task checkstyle(type: Checkstyle) {
-    classpath = sourceSets.main.output + sourceSets.test.output
-    source = sourceSets.main.allJava + sourceSets.test.allJava
-}
 
 task gem(type: JRubyExec, dependsOn: ["gemspec", "classpath"]) {
     jrubyArgs "-S"

@@ -12,7 +12,8 @@ import java.util.List;
 //https://twitter4j.org/en/code-examples.html#search
 //https://twitter4j.org/ja/configuration.html
 //https://twitter4j.org/oldjavadocs/4.0.0/index.html
-public class TwitterSearch {
+public class TwitterSearch
+{
     public void search(String query) {
 
         if (query.length() < 1) {
@@ -21,19 +22,22 @@ public class TwitterSearch {
         }
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true)
-                .setOAuthConsumerKey("*********************")
-                .setOAuthConsumerSecret("******************************************")
-                .setOAuthAccessToken("**************************************************")
-                .setOAuthAccessTokenSecret("******************************************");
-        Twitter twitter = new TwitterFactory().getInstance();
+            .setOAuthConsumerKey("*")
+            .setOAuthConsumerSecret("*")
+            .setOAuthAccessToken("*")
+            .setOAuthAccessTokenSecret("*");
+        Twitter twitter = new TwitterFactory(cb.build()).getInstance();
+        Query q = new Query(query);
+        QueryResult result;
         try {
-            Query q = new Query(query);
-            QueryResult result;
             do {
+                System.out.println(q);
                 result = twitter.search(q);
                 List<Status> tweets = result.getTweets();
+                //System.out.println(tweets.size());
                 for (Status tweet : tweets) {
-                    System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
+                    System.out.println(1111111111);
+                    //System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
                 }
             } while ((q = result.nextQuery()) != null);
             System.exit(0);
