@@ -8,18 +8,14 @@ import org.embulk.spi.Exec;
 import org.junit.Rule;
 //import org.junit.rules.ExpectedException;
 import org.junit.Test;
-import org.junit.Ignore;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
+//import org.junit.Ignore;
+//import static org.junit.Assert.assertEquals;
+//import static org.junit.Assert.assertThrows;
 
-@Ignore
 public class TestTwitterSearchInputPlugin
 {
     @Rule
     public EmbulkTestRuntime runtime = new EmbulkTestRuntime();
-
-    //@Rule
-    //public ExpectedException exception = ExpectedException.none();
 
     private ConfigSource getConfigFromYaml(String yaml)
     {
@@ -44,6 +40,12 @@ public class TestTwitterSearchInputPlugin
             "  - {name: text, type: string}\n" +
             "  - {name: created_at, type: timestamp}";
         ConfigSource config = getConfigFromYaml(configYaml);
+        //System.out.println(config);
+        //System.out.println(config.getObjectNode());
+        //config.loadConfig(TwitterSearchInputPlugin.PluginTask.class);
+
+        //assertEquals("twitter_type", config);
+
 
         //exception.expect(ConfigException.class);
         //assertThrows
