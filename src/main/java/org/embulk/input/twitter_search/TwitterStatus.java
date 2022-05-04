@@ -19,10 +19,6 @@ public class TwitterStatus  {
 		this.orgStatus = orgStatus;
 	}
 
-	public Date getCreatedAt() {
-		return this.orgStatus.getCreatedAt();
-	}
-
 	public long getId() {
 		return this.orgStatus.getId();
 	}
@@ -31,10 +27,14 @@ public class TwitterStatus  {
 		return this.orgStatus.getText();
 	}
 
-	public User getUser() {
-		return orgStatus.getUser();
+	public Date getCreatedAt() {
+		return this.orgStatus.getCreatedAt();
 	}
 
+	//public User getUser() {
+	//	return orgStatus.getUser();
+	//}
+	//
 	//public String getSource() {
 	//	return orgStatus.getSource();
 	//}

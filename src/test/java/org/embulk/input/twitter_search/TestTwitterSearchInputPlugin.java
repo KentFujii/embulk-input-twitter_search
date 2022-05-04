@@ -6,16 +6,20 @@ import org.embulk.config.ConfigSource;
 //import org.embulk.config.ConfigException;
 import org.embulk.spi.Exec;
 import org.junit.Rule;
-import org.junit.rules.ExpectedException;
+//import org.junit.rules.ExpectedException;
 import org.junit.Test;
+import org.junit.Ignore;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
+@Ignore
 public class TestTwitterSearchInputPlugin
 {
     @Rule
     public EmbulkTestRuntime runtime = new EmbulkTestRuntime();
 
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
+    //@Rule
+    //public ExpectedException exception = ExpectedException.none();
 
     private ConfigSource getConfigFromYaml(String yaml)
     {
@@ -27,12 +31,24 @@ public class TestTwitterSearchInputPlugin
     public void testThrowExceptionAbsentJsonColumnName()
     {
         String configYaml = "" +
-                "type: expand_json\n" +
-                "expanded_columns:\n" +
-                "  - {name: _c1, type: string}";
+            "type: twitter_search\n" +
+            "auth:\n" +
+            "  consumer_key: \"sample_consumer_key\"\n" +
+            "  consumer_secret: \"sample_consumer_secret\"\n" +
+            "  access_token: \"sample_access_token\"\n" +
+            "  access_secret: \"sample_access_secret\"\n" +
+            "queries:\n" +
+            "  - \"from:@nishiogi_now exclude:retweets\"\n" +
+            "columns:\n" +
+            "  - {name: id, type: long}\n" +
+            "  - {name: text, type: string}\n" +
+            "  - {name: created_at, type: timestamp}";
         ConfigSource config = getConfigFromYaml(configYaml);
 
         //exception.expect(ConfigException.class);
+        //assertThrows
+        //assertThrows(5, calc.plus(3));
+        //assertThrows
         //exception.expectMessage("Field 'json_column_name' is required but not set");
         //config.loadConfig(TwitterSearchInputPlugin.PluginTask.class);
     }

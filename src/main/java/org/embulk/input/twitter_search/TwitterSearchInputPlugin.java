@@ -1,11 +1,9 @@
 package org.embulk.input.twitter_search;
 
 import java.util.List;
-
-import com.google.common.base.Optional;
+import java.util.Map;
 
 import org.embulk.config.Config;
-import org.embulk.config.ConfigDefault;
 import org.embulk.config.ConfigDiff;
 import org.embulk.config.ConfigSource;
 import org.embulk.config.Task;
@@ -20,21 +18,12 @@ import org.embulk.spi.PageBuilder;
 
 public class TwitterSearchInputPlugin implements InputPlugin {
     public interface PluginTask extends Task {
-        // configuration option 1 (required integer)
-        @Config("option1")
-        public int getOption1();
+        @Config("auth")
+        public Map<String, String> getAuth();
 
-        // configuration option 2 (optional string, null is not allowed)
-        @Config("option2")
-        @ConfigDefault("\"myvalue\"")
-        public String getOption2();
+        @Config("queries")
+        public List<String> getQueries();
 
-        // configuration option 3 (optional string, null is allowed)
-        @Config("option3")
-        @ConfigDefault("null")
-        public Optional<String> getOption3();
-
-        // if you get schema from config
         @Config("columns")
         public SchemaConfig getColumns();
     }
@@ -61,11 +50,16 @@ public class TwitterSearchInputPlugin implements InputPlugin {
 
     @Override
     public TaskReport run(TaskSource taskSource, Schema schema, int taskIndex, PageOutput output) {
-        //PluginTask task = taskSource.loadTask(PluginTask.class);
+        PluginTask task = taskSource.loadTask(PluginTask.class);
+        System.out.println(task.getAuth());
+        System.out.println(task.getQueries());
+
 
         PageBuilder pagebuilder =
                 new PageBuilder(Exec.getBufferAllocator(), schema, output);
 
+        System.out.println(schema.getColumn(0));
+        System.out.println(schema.getColumn(1));
         pagebuilder.setString(schema.getColumn(0), "111111111");
         pagebuilder.setString(schema.getColumn(1), "222222222");
         pagebuilder.addRecord();
