@@ -45,3 +45,30 @@ public class TwitterSearch
         }
     }
 }
+
+//import java.util.ArrayList;
+//import java.util.HashSet;
+//import java.util.Iterator;
+//import java.util.List;
+//import java.util.Set;
+//
+//public class IteratorDemo {
+//
+//    public static void main(String[] args) {
+//        List<String> list = new ArrayList<>();
+//        list.add("alpha");
+//        list.add("bravo");
+//        list.add("charlie");
+//
+//        System.out.println("-----");
+//        printIterable(list.iterator());
+//        System.out.println("-----");
+//    }
+//
+//    private static void printIterable(Iterator<String> iterator) {
+//        while (iterator.hasNext()) {
+//            String s = iterator.next();
+//            System.out.println(s);
+//        }
+//    }
+//}

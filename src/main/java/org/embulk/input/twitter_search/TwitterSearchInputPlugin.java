@@ -16,6 +16,7 @@ import org.embulk.spi.InputPlugin;
 import org.embulk.spi.PageOutput;
 import org.embulk.spi.Schema;
 import org.embulk.spi.SchemaConfig;
+import org.embulk.spi.PageBuilder;
 
 public class TwitterSearchInputPlugin implements InputPlugin {
     public interface PluginTask extends Task {
@@ -60,25 +61,23 @@ public class TwitterSearchInputPlugin implements InputPlugin {
 
     @Override
     public TaskReport run(TaskSource taskSource, Schema schema, int taskIndex, PageOutput output) {
-        PluginTask task = taskSource.loadTask(PluginTask.class);
+        //PluginTask task = taskSource.loadTask(PluginTask.class);
 
-        // Write your code here :)
-        throw new UnsupportedOperationException("TwitterSearchInputPlugin.run method is not implemented yet");
-//        return Exec.newTaskReport();
+        PageBuilder pagebuilder =
+                new PageBuilder(Exec.getBufferAllocator(), schema, output);
+
+        pagebuilder.setString(schema.getColumn(0), "111111111");
+        pagebuilder.setString(schema.getColumn(1), "222222222");
+        pagebuilder.addRecord();
+
+        //pagebuilder.setString(schema.getColumn(0), "333333333");
+        //pagebuilder.setString(schema.getColumn(1), "444444444");
+        //pagebuilder.addRecord();
+
+        pagebuilder.finish();
+
+        return Exec.newTaskReport();
     }
-
-//    public TaskReport run(TaskSource taskSource, Schema schema, int taskIndex, PageOutput output) {
-//        PluginTask task = taskSource.loadTask(PluginTask.class);
-//
-//        PageBuilder pagebuilder =
-//                new PageBuilder(Exec.getBufferAllocator(), schema, output);
-//        pagebuilder.setString(schema.getColumn(0), "unko");
-//
-//        pagebuilder.addRecord();
-//        pagebuilder.finish();
-//
-//        return Exec.newTaskReport();
-//    }
 
     @Override
     public ConfigDiff guess(ConfigSource config)
