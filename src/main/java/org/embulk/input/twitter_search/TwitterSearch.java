@@ -31,13 +31,10 @@ public class TwitterSearch
         QueryResult result;
         try {
             do {
-                System.out.println(q);
                 result = twitter.search(q);
                 List<Status> tweets = result.getTweets();
-                //System.out.println(tweets.size());
                 for (Status tweet : tweets) {
-                    System.out.println(1111111111);
-                    //System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
+                    System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
                 }
             } while ((q = result.nextQuery()) != null);
             System.exit(0);

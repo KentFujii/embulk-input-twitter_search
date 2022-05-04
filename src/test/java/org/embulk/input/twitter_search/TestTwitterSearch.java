@@ -6,10 +6,11 @@ import org.junit.Test;
 public class TestTwitterSearch
 {
   @Test
-  public void testPlus()
+  public void testSearch()
   {
     TwitterSearch twitter = new TwitterSearch();
-    twitter.search("from:@nishiogi_now exclude:retweets");
+    //twitter.search("from:@nishiogi_now exclude:retweets");
+    twitter.search("");
     //assertEquals(5, calc.plus(3));
   }
 }
