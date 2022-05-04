@@ -19,13 +19,13 @@ import org.embulk.spi.PageBuilder;
 public class TwitterSearchInputPlugin implements InputPlugin {
     public interface PluginTask extends Task {
         @Config("auth")
-        public Map<String, String> getAuth();
+        Map<String, String> getAuth();
 
         @Config("queries")
-        public List<String> getQueries();
+        List<String> getQueries();
 
         @Config("columns")
-        public SchemaConfig getColumns();
+        SchemaConfig getColumns();
     }
 
     @Override
@@ -64,9 +64,9 @@ public class TwitterSearchInputPlugin implements InputPlugin {
         pagebuilder.setString(schema.getColumn(1), "222222222");
         pagebuilder.addRecord();
 
-        //pagebuilder.setString(schema.getColumn(0), "333333333");
-        //pagebuilder.setString(schema.getColumn(1), "444444444");
-        //pagebuilder.addRecord();
+        pagebuilder.setString(schema.getColumn(0), "333333333");
+        pagebuilder.setString(schema.getColumn(1), "444444444");
+        pagebuilder.addRecord();
 
         pagebuilder.finish();
 
