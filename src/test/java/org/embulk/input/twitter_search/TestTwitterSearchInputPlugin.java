@@ -24,7 +24,7 @@ public class TestTwitterSearchInputPlugin
     }
 
     @Test
-    public void testThrowExceptionAbsentJsonColumnName()
+    public void testGetConfig()
     {
         String configYaml = "" +
             "type: twitter_search\n" +
