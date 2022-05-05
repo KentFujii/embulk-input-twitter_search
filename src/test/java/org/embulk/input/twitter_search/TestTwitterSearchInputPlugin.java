@@ -1,7 +1,6 @@
 package org.embulk.input.twitter_search;
 
-//import java.util.List;
-import java.util.Map;
+import java.util.List;
 import org.embulk.EmbulkTestRuntime;
 import org.embulk.config.ConfigLoader;
 import org.embulk.config.ConfigSource;
@@ -12,7 +11,7 @@ import org.junit.Rule;
 //import org.junit.rules.ExpectedException;
 import org.junit.Test;
 //import org.junit.Ignore;
-//import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 //import static org.junit.Assert.assertThrows;
 
 public class TestTwitterSearchInputPlugin
@@ -43,23 +42,18 @@ public class TestTwitterSearchInputPlugin
             "  - {name: text, type: string}\n" +
             "  - {name: created_at, type: timestamp}";
         ConfigSource config = getConfigFromYaml(configYaml);
-        System.out.println(config.toString());
 
         ConfigSource auth = config.getNested("auth");
         String consumerKey = auth.get(String.class, "consumer_key");
-        System.out.println(consumerKey);
+        String consumerSecret = auth.get(String.class, "consumer_secret");
+        String accessToken = auth.get(String.class, "access_token");
+        String accessSecret = auth.get(String.class, "access_secret");
+        assertEquals("sample_consumer_key", consumerKey);
+        assertEquals("sample_consumer_secret", consumerSecret);
+        assertEquals("sample_access_token", accessToken);
+        assertEquals("sample_access_secret", accessSecret);
 
-        //System.out.println(config.getObjectNode());
-        //config.loadConfig(TwitterSearchInputPlugin.PluginTask.class);
-
-        //assertEquals("twitter_type", config);
-
-
-        //exception.expect(ConfigException.class);
-        //assertThrows
-        //assertThrows(5, calc.plus(3));
-        //assertThrows
-        //exception.expectMessage("Field 'json_column_name' is required but not set");
-        //config.loadConfig(TwitterSearchInputPlugin.PluginTask.class);
+        String[] queries = config.get(String[].class, "queries");
+        assertEquals("from:@nishiogi_now exclude:retweets", queries[0]);
     }
 }
