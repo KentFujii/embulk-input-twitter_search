@@ -30,3 +30,9 @@ in:
 ```
 $ ./gradlew gem  # -t to watch change of files and rebuild continuously
 ```
+
+## Test
+
+```
+./gradlew clean test
+```

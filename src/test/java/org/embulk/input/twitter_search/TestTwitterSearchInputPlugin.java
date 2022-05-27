@@ -55,5 +55,9 @@ public class TestTwitterSearchInputPlugin
 
         String[] queries = config.get(String[].class, "queries");
         assertEquals("from:@nishiogi_now exclude:retweets", queries[0]);
+
+        ConfigSource[] columns = config.get(ConfigSource[].class, "columns");
+        assertEquals("id", columns[0].get(String.class, "name"));
+        assertEquals("long", columns[0].get(String.class, "type"));
     }
 }
