@@ -24,6 +24,7 @@ public class TwitterSearch implements Iterator<Status>
     {
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true)
+                .setJSONStoreEnabled(true)
                 .setOAuthConsumerKey(consumerKey)
                 .setOAuthConsumerSecret(consumerSecret)
                 .setOAuthAccessToken(accessToken)
