@@ -69,7 +69,7 @@ public class TwitterSearch implements Iterator<Status>
             try {
                 //TODO: exp backeff and full-jitter
                 int seconds = te.getRateLimitStatus().getSecondsUntilReset();
-                logger.warn(String.format("%ss waiting", seconds));
+                logger.warn(String.format("%ss waiting...", seconds));
                 TimeUnit.SECONDS.sleep(seconds);
             } catch (InterruptedException e) {
                 e.printStackTrace();
