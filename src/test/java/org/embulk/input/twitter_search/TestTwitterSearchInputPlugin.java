@@ -13,7 +13,9 @@ import org.junit.Test;
 //import org.junit.Ignore;
 import static org.junit.Assert.assertEquals;
 //import static org.junit.Assert.assertThrows;
+//import org.embulk.spi.TestPageBuilderReader.MockPageOutput;
 
+//https://qiita.com/Civitaspo/items/c092620577983c9e84cc
 public class TestTwitterSearchInputPlugin
 {
     @Rule

@@ -16,8 +16,10 @@ import org.embulk.spi.Schema;
 import org.embulk.spi.SchemaConfig;
 import org.embulk.spi.PageBuilder;
 
-public class TwitterSearchInputPlugin implements InputPlugin {
-    public interface PluginTask extends Task {
+public class TwitterSearchInputPlugin implements InputPlugin
+{
+    public interface PluginTask extends Task
+    {
         @Config("auth")
         Map<String, String> getAuth();
 
@@ -29,7 +31,8 @@ public class TwitterSearchInputPlugin implements InputPlugin {
     }
 
     @Override
-    public ConfigDiff transaction(ConfigSource config, InputPlugin.Control control) {
+    public ConfigDiff transaction(ConfigSource config, InputPlugin.Control control)
+    {
         PluginTask task = config.loadConfig(PluginTask.class);
 
         Schema schema = task.getColumns().toSchema();
@@ -39,17 +42,20 @@ public class TwitterSearchInputPlugin implements InputPlugin {
     }
 
     @Override
-    public ConfigDiff resume(TaskSource taskSource, Schema schema, int taskCount, InputPlugin.Control control) {
+    public ConfigDiff resume(TaskSource taskSource, Schema schema, int taskCount, InputPlugin.Control control)
+    {
         control.run(taskSource, schema, taskCount);
         return Exec.newConfigDiff();
     }
 
     @Override
-    public void cleanup(TaskSource taskSource, Schema schema, int taskCount, List<TaskReport> successTaskReports) {
+    public void cleanup(TaskSource taskSource, Schema schema, int taskCount, List<TaskReport> successTaskReports)
+    {
     }
 
     @Override
-    public TaskReport run(TaskSource taskSource, Schema schema, int taskIndex, PageOutput output) {
+    public TaskReport run(TaskSource taskSource, Schema schema, int taskIndex, PageOutput output)
+    {
         PluginTask task = taskSource.loadTask(PluginTask.class);
         System.out.println(task.getAuth());
         System.out.println(task.getQueries());

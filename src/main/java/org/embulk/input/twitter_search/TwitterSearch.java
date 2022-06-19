@@ -7,68 +7,77 @@ import twitter4j.QueryResult;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 import twitter4j.conf.ConfigurationBuilder;
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.LinkedList;
+import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 
-//https://twitter4j.org/en/code-examples.html#search
-//https://twitter4j.org/ja/configuration.html
-//https://twitter4j.org/oldjavadocs/4.0.0/index.html
-public class TwitterSearch
+public class TwitterSearch implements Iterator<Status>
 {
-    public void search(String query) {
+    private final Twitter twitter;
+    private QueryResult queryResult;
+    private final LinkedList<Status> twitterStatuses = new LinkedList<>();
+    private static final Logger logger = LoggerFactory.getLogger(TwitterSearch.class);
 
-        if (query.length() < 1) {
-            System.out.println("java twitter4j.examples.search.SearchTweets [query]");
-            System.exit(-1);
-        }
+    public TwitterSearch(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret)
+    {
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true)
-            .setOAuthConsumerKey("*")
-            .setOAuthConsumerSecret("*")
-            .setOAuthAccessToken("*")
-            .setOAuthAccessTokenSecret("*");
-        Twitter twitter = new TwitterFactory(cb.build()).getInstance();
-        Query q = new Query(query);
-        QueryResult result;
+                .setOAuthConsumerKey(consumerKey)
+                .setOAuthConsumerSecret(consumerSecret)
+                .setOAuthAccessToken(accessToken)
+                .setOAuthAccessTokenSecret(accessTokenSecret);
+        twitter = new TwitterFactory(cb.build()).getInstance();
+    }
+
+    public void search(String queryString)
+    {
         try {
-            do {
-                result = twitter.search(q);
-                List<Status> tweets = result.getTweets();
-                for (Status tweet : tweets) {
-                    System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
-                }
-            } while ((q = result.nextQuery()) != null);
-            System.exit(0);
+            Query query = new Query(queryString);
+            queryResult = twitter.search(query);
+            twitterStatuses.addAll(queryResult.getTweets());
         } catch (TwitterException te) {
+            waitTillReset(te);
+            search(queryString);
+        }
+    }
+
+    public boolean hasNext()
+    {
+        if (twitterStatuses.isEmpty() && queryResult.hasNext()) {
+            try {
+                queryResult = twitter.search(queryResult.nextQuery());
+                twitterStatuses.addAll(queryResult.getTweets());
+            } catch (TwitterException te) {
+                waitTillReset(te);
+                return hasNext();
+            }
+        }
+        return !twitterStatuses.isEmpty();
+    }
+
+    public Status next()
+    {
+        return twitterStatuses.removeFirst();
+    }
+
+    private void waitTillReset(TwitterException te)
+    {
+        if (te.getErrorMessage().equals("Rate limit exceeded")) {
+            try {
+                //TODO: exp backeff and full-jitter
+                int seconds = te.getRateLimitStatus().getSecondsUntilReset();
+                logger.warn(String.format("%ss waiting", seconds));
+                TimeUnit.SECONDS.sleep(seconds);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                System.exit(-1);
+            }
+        } else {
             te.printStackTrace();
-            System.out.println("Failed to search tweets: " + te.getMessage());
+            logger.warn(String.format("Messages: (%s)", te.getMessage()));
             System.exit(-1);
         }
     }
 }
-
-//import java.util.ArrayList;
-//import java.util.HashSet;
-//import java.util.Iterator;
-//import java.util.List;
-//import java.util.Set;
-//
-//public class IteratorDemo {
-//
-//    public static void main(String[] args) {
-//        List<String> list = new ArrayList<>();
-//        list.add("alpha");
-//        list.add("bravo");
-//        list.add("charlie");
-//
-//        System.out.println("-----");
-//        printIterable(list.iterator());
-//        System.out.println("-----");
-//    }
-//
-//    private static void printIterable(Iterator<String> iterator) {
-//        while (iterator.hasNext()) {
-//            String s = iterator.next();
-//            System.out.println(s);
-//        }
-//    }
-//}
