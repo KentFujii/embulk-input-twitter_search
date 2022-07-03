@@ -7,6 +7,7 @@ import twitter4j.QueryResult;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 import twitter4j.conf.ConfigurationBuilder;
+import twitter4j.conf.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.LinkedList;
@@ -23,20 +24,27 @@ public class TwitterSearch implements Iterator<Status>
     public TwitterSearch(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret)
     {
         ConfigurationBuilder cb = new ConfigurationBuilder();
+        System.out.println(cb);
         cb.setDebugEnabled(true)
                 .setJSONStoreEnabled(true)
                 .setOAuthConsumerKey(consumerKey)
                 .setOAuthConsumerSecret(consumerSecret)
                 .setOAuthAccessToken(accessToken)
                 .setOAuthAccessTokenSecret(accessTokenSecret);
-        twitter = new TwitterFactory(cb.build()).getInstance();
+        Configuration configuration = cb.build();
+        TwitterFactory twitterFactory = new TwitterFactory(configuration);
+        twitter = twitterFactory.getInstance();
     }
 
     public void search(String queryString)
     {
         try {
             Query query = new Query(queryString);
+            System.out.println("11111111111111");
             queryResult = twitter.search(query);
+            System.out.println("22222222222222");
+            System.out.println(queryResult);
+            System.out.println("33333333333333");
             twitterStatuses.addAll(queryResult.getTweets());
         } catch (TwitterException te) {
             waitTillReset(te);

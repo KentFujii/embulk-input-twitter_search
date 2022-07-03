@@ -1,29 +1,101 @@
 package org.embulk.input.twitter_search;
 
+import org.junit.Before;
 import org.junit.Test;
-import twitter4j.Status;
+import org.junit.runner.RunWith;
+//import org.mockito.InjectMocks;
+//import org.mockito.Mock;
+import org.mockito.Mockito;
+//import org.mockito.MockitoAnnotations;
+//import org.mockito.runners.MockitoJUnitRunner;
+//import org.powermock.api.PowerMock;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import twitter4j.QueryResult;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
+import twitter4j.conf.Configuration;
 
+import java.util.Arrays;
+import java.util.List;
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({TwitterSearch.class, ConfigurationBuilder.class})
 public class TestTwitterSearch
 {
-    @Test
-    public void testTwitterSearch()
-    {
-        TwitterSearch twitterSearch = new TwitterSearch(
+    //@Mock
+    //ConfigurationBuilder mockConfigurationBuilder;
+
+    //@InjectMocks
+    private TwitterSearch twitterSearch;
+
+    @Before
+    public void testNew() throws Exception {
+        ConfigurationBuilder mockConfigurationBuilder = Mockito.mock(ConfigurationBuilder.class);
+        PowerMockito.whenNew(ConfigurationBuilder.class).withNoArguments().thenReturn(mockConfigurationBuilder);
+        Mockito.when(mockConfigurationBuilder.setDebugEnabled(true)).thenReturn(mockConfigurationBuilder);
+        Mockito.when(mockConfigurationBuilder.setJSONStoreEnabled(true)).thenReturn(mockConfigurationBuilder);
+        Mockito.when(mockConfigurationBuilder.setOAuthConsumerKey("consumer-***-key")).thenReturn(mockConfigurationBuilder);
+        Mockito.when(mockConfigurationBuilder.setOAuthConsumerSecret("consumer-***-secret")).thenReturn(mockConfigurationBuilder);
+        Mockito.when(mockConfigurationBuilder.setOAuthAccessToken("access-***-token")).thenReturn(mockConfigurationBuilder);
+        Mockito.when(mockConfigurationBuilder.setOAuthAccessTokenSecret("access-***-secret")).thenReturn(mockConfigurationBuilder);
+        Configuration mockConfiguration = Mockito.mock(Configuration.class);
+        Mockito.when(mockConfigurationBuilder.build()).thenReturn(mockConfiguration);
+        TwitterFactory mockTwitterFactory = Mockito.mock(TwitterFactory.class);
+        PowerMockito.whenNew(TwitterFactory.class).withArguments(mockConfiguration).thenReturn(mockTwitterFactory);
+        Twitter mockTwitter = Mockito.mock(Twitter.class);
+        Mockito.doReturn(mockTwitter).when(mockTwitterFactory).getInstance();
+        twitterSearch = new TwitterSearch(
                 "consumer-***-key",
                 "consumer-***-secret",
                 "access-***-token",
                 "access-***-secret"
         );
-        twitterSearch.search("#Embulk");
-        while (twitterSearch.hasNext()) {
-            Status status = twitterSearch.next();
-            System.out.println(status.getText());
-        }
+        Mockito.verify(mockConfigurationBuilder).setDebugEnabled(true);
     }
 
     @Test
-    public void testSearch()
-    {}
+    public void testSearch() throws TwitterException {
+        //QueryResult mockQueryResult = PowerMockito.mock(QueryResult.class);
+        //QueryResult mockQueryResult = Mockito.mock(QueryResult.class);
+        //Mockito.doReturn(mockQueryResult).when(mockTwitter.search(Mockito.any(twitter4j.Query.class)));
+        //Mockito.when(mockTwitter.search(new twitter4j.Query("test"))).thenReturn(mockQueryResult);
+        twitterSearch.search("test");
+        //Mockito.when(twitter.search(new twitter4j.Query("aaaaa"))).thenReturn(Mockito.mock(QueryResult.class));
+    }
+
+
+    //@Test
+    //public void testTwitterSearch() throws Exception {
+    //    ConfigurationBuilder mockConfigurationBuilder = PowerMockito.mock(ConfigurationBuilder.class);
+    //    PowerMockito.whenNew(ConfigurationBuilder.class).withNoArguments().thenReturn(mockConfigurationBuilder);
+    //    Mockito.doReturn(mockConfigurationBuilder).when(mockConfigurationBuilder).setDebugEnabled(true);
+    //    Mockito.doReturn(mockConfigurationBuilder).when(mockConfigurationBuilder).setJSONStoreEnabled(true);
+    //    Mockito.doReturn(mockConfigurationBuilder).when(mockConfigurationBuilder).setOAuthConsumerKey("consumer-***-key");
+    //    Mockito.doReturn(mockConfigurationBuilder).when(mockConfigurationBuilder).setOAuthConsumerSecret("consumer-***-secret");
+    //    Mockito.doReturn(mockConfigurationBuilder).when(mockConfigurationBuilder).setOAuthAccessToken("access-***-token");
+    //    Mockito.doReturn(mockConfigurationBuilder).when(mockConfigurationBuilder).setOAuthAccessTokenSecret("access-***-secret");
+    //    TwitterFactory mockTwitterFactory = Mockito.mock(TwitterFactory.class);
+    //    Twitter mockTwitter = Mockito.mock(Twitter.class);
+    //    Mockito.doReturn(mockTwitter).when(mockTwitterFactory).getInstance();
+    //    //PowerMockito.whenNew(TwitterFactory.class).withArguments().thenReturn(mockConfigurationBuilder);
+    //
+    //    TwitterSearch twitterSearch = new TwitterSearch(
+    //            "consumer-***-key",
+    //            "consumer-***-secret",
+    //            "access-***-token",
+    //            "access-***-secret"
+    //    );
+    //    //Assert.assertEquals(mockTwitter, twitterSearch);
+    //    //twitterSearch.search("#Embulk");
+    //    //while (twitterSearch.hasNext()) {
+    //    //    Status status = twitterSearch.next();
+    //    //    System.out.println(status.getText());
+    //    //}
+    //}
 
     @Test
     public void testHasNext()
