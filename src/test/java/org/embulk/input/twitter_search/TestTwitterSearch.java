@@ -4,11 +4,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 //import org.mockito.InjectMocks;
-//import org.mockito.Mock;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 //import org.mockito.MockitoAnnotations;
 //import org.mockito.runners.MockitoJUnitRunner;
-//import org.powermock.api.PowerMock;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -26,14 +25,10 @@ import java.util.List;
 @PrepareForTest({TwitterSearch.class, ConfigurationBuilder.class})
 public class TestTwitterSearch
 {
-    //@Mock
-    //ConfigurationBuilder mockConfigurationBuilder;
-
-    //@InjectMocks
     private TwitterSearch twitterSearch;
 
     @Before
-    public void testNew() throws Exception {
+    public void setup() throws Exception {
         ConfigurationBuilder mockConfigurationBuilder = Mockito.mock(ConfigurationBuilder.class);
         PowerMockito.whenNew(ConfigurationBuilder.class).withNoArguments().thenReturn(mockConfigurationBuilder);
         Mockito.when(mockConfigurationBuilder.setDebugEnabled(true)).thenReturn(mockConfigurationBuilder);
