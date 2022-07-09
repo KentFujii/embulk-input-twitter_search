@@ -25,7 +25,6 @@ public class TwitterSearch implements Iterator<Status>
     public TwitterSearch(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret)
     {
         ConfigurationBuilder cb = new ConfigurationBuilder();
-        System.out.println(cb);
         cb.setDebugEnabled(true)
                 .setJSONStoreEnabled(true)
                 .setOAuthConsumerKey(consumerKey)
@@ -42,7 +41,6 @@ public class TwitterSearch implements Iterator<Status>
         try {
             Query query = new Query(queryString);
             queryResult = twitter.search(query);
-            System.out.println(queryResult);
             List<Status> statuses = queryResult.getTweets();
             twitterStatuses = new LinkedList<>(statuses);
         } catch (TwitterException te) {
