@@ -12,13 +12,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.LinkedList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class TwitterSearch implements Iterator<Status>
 {
     private final Twitter twitter;
     private QueryResult queryResult;
-    private final LinkedList<Status> twitterStatuses = new LinkedList<>();
+    private LinkedList<Status> twitterStatuses;
     private static final Logger logger = LoggerFactory.getLogger(TwitterSearch.class);
 
     public TwitterSearch(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret)
@@ -40,12 +41,10 @@ public class TwitterSearch implements Iterator<Status>
     {
         try {
             Query query = new Query(queryString);
-            System.out.println("11111111111111");
             queryResult = twitter.search(query);
-            System.out.println("22222222222222");
             System.out.println(queryResult);
-            System.out.println("33333333333333");
-            twitterStatuses.addAll(queryResult.getTweets());
+            List<Status> statuses = queryResult.getTweets();
+            twitterStatuses = new LinkedList<>(statuses);
         } catch (TwitterException te) {
             waitTillReset(te);
             search(queryString);
