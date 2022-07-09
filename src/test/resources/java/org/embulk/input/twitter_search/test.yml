@@ -1,0 +1,8 @@
+type: twitter_search
+auth:
+  consumer_key: "sample_consumer_key"
+  consumer_secret: "sample_consumer_secret"
+  access_token: "sample_access_token"
+  access_secret: "sample_access_secret"
+queries:
+  - "from:@nishiogi_now exclude:retweets"
