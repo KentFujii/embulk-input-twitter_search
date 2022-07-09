@@ -1,38 +1,29 @@
 # Twitter Search input plugin for Embulk
 
-TODO: Write short description here and build.gradle file.
+Input Twitter Search API plugin for Embulk.
 
 ## Overview
 
 * **Plugin type**: input
-* **Resume supported**: yes
-* **Cleanup supported**: yes
+* **Resume supported**: no
+* **Cleanup supported**: no
 * **Guess supported**: no
-
-## Configuration
-
-- **option1**: description (integer, required)
-- **option2**: description (string, default: `"myvalue"`)
-- **option3**: description (string, default: `null`)
 
 ## Example
 
 ```yaml
-in:
+input:
   type: twitter_search
-  option1: example1
-  option2: example2
+  auth:
+    consumer_key: "sample_consumer_key"
+    consumer_secret: "sample_consumer_secret"
+    access_token: "sample_access_token"
+    access_secret: "sample_access_secret"
+  queries:
+    - "from:@nishiogi_now exclude:retweets"
 ```
 
+## TODO
 
-## Build
-
-```
-$ ./gradlew gem  # -t to watch change of files and rebuild continuously
-```
-
-## Test
-
-```
-./gradlew clean test
-```
+- exp backeff and full-jitter
+- Resume and Cleanup
